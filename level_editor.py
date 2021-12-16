@@ -196,6 +196,7 @@ while run:
         # quit game
         if event.type == pygame.QUIT:
             run = False
+            pygame.quit()
         # mouseclicks to change tiles
         if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
             clicked = True
@@ -224,5 +225,7 @@ while run:
 
     # update game display window
     pygame.display.update()
+
+
 
 pygame.quit()
