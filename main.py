@@ -20,11 +20,11 @@ white = (255, 255, 255)
 
 
 # load images
-sun_img = pygame.image.load('img/sun.png')
-bg_img = pygame.image.load('img/sky.png')
-restart_img = pygame.image.load('img/restart_btn.png')
-start_img = pygame.image.load('img/start_btn.png')
-exit_img = pygame.image.load('img/exit_btn.png')
+sun_img = pygame.image.load('img/sun.png')  # .convert()
+bg_img = pygame.image.load('img/sky.png').convert()
+restart_img = pygame.image.load('img/restart_btn.png').convert()
+start_img = pygame.image.load('img/start_btn.png').convert()
+exit_img = pygame.image.load('img/exit_btn.png').convert()
 
 # function to reset level
 
@@ -138,7 +138,7 @@ def main():
                 if pygame.sprite.spritecollide(player, GameMetaData.coin_group, True):
                     GameMetaData.score += 1
                     GameMetaData.coin_fx.play()
-                draw_text('X ' + str(GameMetaData.score), GameMetaData.font_score,
+                draw_text('X ' + str(GameMetaData.score) + '''    FPS: ''' + str(GameMetaData.clock.get_fps())[0:5], GameMetaData.font_score,
                           white, GameMetaData.tile_size - 10, 10)
 
             GameMetaData.blob_group.draw(GameMetaData.screen)
