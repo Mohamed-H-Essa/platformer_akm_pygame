@@ -25,7 +25,7 @@ class GameMetaData:
     tile_size = 50 * scale_factor
     game_over = 0
     main_menu = True
-    level = 0
+    level = 1
     max_levels = 5
     score = 0
     blue = (0, 0, 255)
