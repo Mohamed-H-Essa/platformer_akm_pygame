@@ -100,7 +100,19 @@ def main():
                 run = False
             # does 2 things at the same time "excellent idea"
             if start_button.draw():
+                # ** set level and cool_downs
+                GameMetaData.level = 1
+                GameMetaData.game_over = 0
+                reset_level(GameMetaData.level, player)
+                # so as to start the game we should hide the menu
                 GameMetaData.main_menu = False
+            # ** times won all the 5 levels
+            if GameMetaData.victory_times > 0:
+                draw_text(f'number of wins: {GameMetaData.victory_times}', GameMetaData.font, GameMetaData.blue,
+                          (GameMetaData.screen_width // 2) - 110 * GameMetaData.scale_factor, GameMetaData.screen_height // 2)
+                draw_text(f'press "start" to play again <3', GameMetaData.font, GameMetaData.blue,
+                          (GameMetaData.screen_width // 2) - 230 * GameMetaData.scale_factor, GameMetaData.screen_height // 2 + 60)
+
         else:
             GameMetaData.world.draw()
 
@@ -162,6 +174,13 @@ def main():
                 else:
                     draw_text('YOU WON, yaaaaaaaay!', GameMetaData.font, GameMetaData.blue,
                               (GameMetaData.screen_width // 2) - 140 * GameMetaData.scale_factor, GameMetaData.screen_height // 2)
+                    # ** delay for a bit of time before displaying the menue again
+                    GameMetaData.win_cooldown += 1
+                    if GameMetaData.win_cooldown >= GameMetaData.win_display_time:
+                        # show minue after delay
+                        GameMetaData.main_menu = True
+                        # increment the number of victories
+                        GameMetaData.victory_times += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

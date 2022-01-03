@@ -28,7 +28,12 @@ class GameMetaData:
     level = 1
     max_levels = 5
     score = 0
-    blue = (0, 0, 255)
+    blue = (15, 50, 255)
+    # ** winning cooldown
+    win_cooldown = 0  # carries the delay
+    win_display_time = 4 * fps  # setting the delay time to 4 seconds
+    # ** times won all the 5 levels
+    victory_times = 0
 
     # TO-DO fix this method
     # edit: done
