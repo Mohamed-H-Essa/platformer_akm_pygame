@@ -1,6 +1,5 @@
 import pygame
 from pygame import mixer
-# from world import World
 
 
 class GameMetaData:
@@ -12,33 +11,22 @@ class GameMetaData:
     coin_group = pygame.sprite.Group()
     exit_group = pygame.sprite.Group()
 
-    # pygame.mixer.pre_init(44100, -16, 2, 512)
-    # mixer.init()
-    # pygame.init()
-
     # these are static variables that can be accessed anywhere in the code through this class
     clock = pygame.time.Clock()
     fps = 60
 
-    # defining screen variables ( width and height )
-    #
-    # adding scale factor for different sceren reselutions
-
     # Siko scale_factor idea
+    # adding scale factor for different sceren reselutions
     scale_factor = 0.7
-    #
+    # defining screen variables ( width and height )
     screen_width = 1000 * scale_factor
     screen_height = 1000 * scale_factor
     # define game variables
     tile_size = 50 * scale_factor
     game_over = 0
     main_menu = True
-    level = 1
-    # lives = 3
-    # max_levels = 7
-    max_levels = 2
-    # player = Player(100, screen_height - 130)
-
+    level = 0
+    max_levels = 5
     score = 0
     blue = (0, 0, 255)
 
@@ -47,6 +35,7 @@ class GameMetaData:
     @classmethod
     def metaGameStarter(cls):
         # TO-DO make this screen global
+        # edit: done
         pygame.display.set_caption('Platformer')
         cls.screen = pygame.display.set_mode(
             (GameMetaData.screen_width, GameMetaData.screen_height))
@@ -62,10 +51,8 @@ class GameMetaData:
         cls.jump_fx.set_volume(0.5)
         cls.game_over_fx = pygame.mixer.Sound('img/game_over.wav')
         cls.game_over_fx.set_volume(0.5)
-        # cls.world = World(cls.world_data)
 
     # define font
-
     @classmethod
     def defineFont(cls):
         cls.font = pygame.font.SysFont(

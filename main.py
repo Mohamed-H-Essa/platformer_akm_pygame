@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 # from pygame import mixer
 import pickle
 from os import path
@@ -10,6 +9,8 @@ from coin import Coin
 from meta_data import GameMetaData
 from meta_data import GameMetaData
 from player import Player
+from button import Button
+from pygame.locals import *
 
 
 GameMetaData.metaGameStarter()
@@ -19,10 +20,7 @@ GameMetaData.defineFont()
 white = (255, 255, 255)
 
 
-# load images
-# shreif
-# .convert_alpha() FPS ==> 15=>120
-# convert_alpha idea-->
+# Sherif collected these assets so as to add cinsistency across sprites
 sun_img = pygame.image.load('img/sun.png').convert_alpha()
 sun_img = pygame.transform.scale(
     sun_img, (sun_img.get_width() * GameMetaData.scale_factor, sun_img.get_height() * GameMetaData.scale_factor))
@@ -62,72 +60,23 @@ def reset_level(level, player):
     return GameMetaData.world
 
 
-class Button():
-    def __init__(self, x, y, image):
-        self.image = image
-        self.image = pygame.transform.scale(self.image, (
-            self.image.get_width() * GameMetaData.scale_factor, self.image.get_height() * GameMetaData.scale_factor))
-        self.rect = self.image.get_rect()
-        self.rect.x = x  # * GameMetaData.scale_factor
-        self.rect.y = y  # * GameMetaData.scale_factor
-        self.clicked = False
-
-    def draw(self):
-        action = False
-
-        # get mouse position
-        pos = pygame.mouse.get_pos()
-
-        # check mouseover and clicked conditions
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                # print('hi')
-                action = True
-                self.clicked = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-
-        # draw button
-        GameMetaData.screen.blit(self.image, self.rect)
-
-        return action
-
-
 def main():
     # load in level data and create world
     if path.exists(f'./levels_data/level{GameMetaData.level}_data'):
-        # print('yep found iiiiiiiiiiiit')
         pickle_in = open(f'./levels_data/level{GameMetaData.level}_data', 'rb')
         GameMetaData.world_data = pickle.load(pickle_in)
-        # print(len(world_data))
-    # GameMetaData.world = World(GameMetaData.world_data)
     GameMetaData.world = World(GameMetaData.world_data)
     player = Player(
         100 * GameMetaData.scale_factor,
         GameMetaData.screen_height - 10 * GameMetaData.scale_factor,
         GameMetaData.world)
-    # player = Player(100, GameMetaData.screen_height - 130)
-
-    # GameMetaData.blob_group = pygame.sprite.Group()
-    # GameMetaData.platform_group = pygame.sprite.Group()
-    # GameMetaData.lava_group = pygame.sprite.Group()
-    # GameMetaData.coin_group = pygame.sprite.Group()
-    # GameMetaData.exit_group = pygame.sprite.Group()
 
     # create dummy coin for showing the score
     score_coin = Coin(GameMetaData.tile_size // 2 * GameMetaData.scale_factor,
                       GameMetaData.tile_size // 2 * GameMetaData.scale_factor)
     GameMetaData.coin_group.add(score_coin)
 
-    # # load in level data and create world
-    # if path.exists(f'level{GameMetaData.level}_data'):
-    #     pickle_in = open(f'level{GameMetaData.level}_data', 'rb')
-    #     world_data = pickle.load(pickle_in)
-    #     # print(len(world_data))
-    # world = World(world_data)
-
-    # create buttons
+    # creating buttons
     restart_button = Button(GameMetaData.screen_width // 2 - 50 * GameMetaData.scale_factor,
                             GameMetaData.screen_height // 2 + 100 * GameMetaData.scale_factor, restart_img)
     start_button = Button(GameMetaData.screen_width // 2 - 350 * GameMetaData.scale_factor,
@@ -146,9 +95,10 @@ def main():
             sun_img, (100*GameMetaData.scale_factor, 100*GameMetaData.scale_factor))
 
         if GameMetaData.main_menu == True:
-            # does 2 things at the same time
+            # does 2 things at the same time "excellent idea"
             if exit_button.draw():
                 run = False
+            # does 2 things at the same time "excellent idea"
             if start_button.draw():
                 GameMetaData.main_menu = False
         else:
@@ -158,54 +108,46 @@ def main():
                 GameMetaData.blob_group.update()
                 GameMetaData.platform_group.update()
                 # update score
-                # check if a coin has been collected
+                # check if a coin has been collected, the "true" is for removing the collected ones
                 if pygame.sprite.spritecollide(player, GameMetaData.coin_group, True):
+
                     GameMetaData.score += 1
                     GameMetaData.coin_fx.play()
                 draw_text('X ' + str(GameMetaData.score) + '    FPS: ' + str(GameMetaData.clock.get_fps())[0:5], GameMetaData.font_score,
                           white, GameMetaData.tile_size - 10 * GameMetaData.scale_factor, 10 * GameMetaData.scale_factor)
-                # draw_text('LIVES x ' + str(GameMetaData.lives), GameMetaData.font_score,
-                #           white, GameMetaData.screen_width - GameMetaData.tile_size - 10 * GameMetaData.scale_factor, 10 * GameMetaData.scale_factor)
                 off_white = (30, 30, 30)
                 level_text = GameMetaData.font.render(
                     'LEVEL: ' + str(GameMetaData.level), 1, off_white)
-                # level_text_b = GameMetaData.font.render(
-                #     'LEVEL: ' + str(GameMetaData.level), 1, white)
-                GameMetaData.screen.blit(level_text, (
-                    GameMetaData.screen_width / 2
-                    # - GameMetaData.tile_size - 10 * GameMetaData.scale_factor
-                    - level_text.get_width() / 2, 50 * GameMetaData.scale_factor))
+                GameMetaData.screen.blit(level_text, (GameMetaData.screen_width /
+                                         2 - level_text.get_width() / 2, 50 * GameMetaData.scale_factor))
 
+            # drawing everything onto the screan using the built in draw() method
+            # see documentation for more details about how "draw" works in pygame
+            """
+                the draw method is a part of the pygame framework,
+                it simply plots every sprite within the group onto the screen 
+            """
             GameMetaData.blob_group.draw(GameMetaData.screen)
             GameMetaData.platform_group.draw(GameMetaData.screen)
             GameMetaData.lava_group.draw(GameMetaData.screen)
             GameMetaData.coin_group.draw(GameMetaData.screen)
             GameMetaData.exit_group.draw(GameMetaData.screen)
-
+            # the player handles collision & movement etc
+            """
+            player movement are actually done here
+            """
             GameMetaData.game_over = player.update(GameMetaData.game_over)
 
             # if player has died
-            if GameMetaData.game_over == -1:
-                # print('-1 ')
-                # GameMetaData.game_over = 0
-                # addition
-                # and GameMetaData.game_over == -1:
-                # addition
-                # GameMetaData.lives -= 1
-
-                # addition (and)
-                # and GameMetaData.lives == 0:
-                if restart_button.draw():
+            if GameMetaData.game_over == -1:  # -1 is the agreed upon value for losing
+                # does 2 things at the same time "excellent idea"
+                if restart_button.draw():  # providing a restart button so as to give another chance
                     GameMetaData.world_data = []
+                    # the world object is used to turn raw world_data list into an actual-actionable object
                     GameMetaData.world = reset_level(
                         GameMetaData.level, player)
                     GameMetaData.game_over = 0
                     GameMetaData.score = 0
-                # addition
-                # if GameMetaData.lives == 0:
-                #     GameMetaData.level = 0
-                    # GameMetaData.world = reset_level(
-                    #     GameMetaData.level, player)
 
             # if player has completed the level
             if GameMetaData.game_over == 1:
@@ -213,20 +155,13 @@ def main():
                 GameMetaData.level += 1
                 if GameMetaData.level <= GameMetaData.max_levels:
                     # reset level
-                    GameMetaData.world_data = []
+                    GameMetaData.world_data = []  # emptying the world_data array
                     GameMetaData.world = reset_level(
-                        GameMetaData.level, player)
+                        GameMetaData.level, player)  # reset_level method will actually fill the world_data
                     GameMetaData.game_over = 0
                 else:
                     draw_text('YOU WON, yaaaaaaaay!', GameMetaData.font, GameMetaData.blue,
                               (GameMetaData.screen_width // 2) - 140 * GameMetaData.scale_factor, GameMetaData.screen_height // 2)
-                    # if restart_button.draw():
-                    #     GameMetaData.level = 1
-                    #     # reset level
-                    #     GameMetaData.world_data = []
-                    #     GameMetaData.world = reset_level(GameMetaData.level)
-                    #     GameMetaData.game_over = 0
-                    #     GameMetaData.score = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

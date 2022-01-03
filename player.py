@@ -9,6 +9,7 @@ class Player():
         self.reset(x, y)
         self.world = GameMetaData.world
 
+    # expect game_over to be "0 playing", "1 won", "-1 lost"
     def update(self, game_over):
         dx = 0
         dy = 0
@@ -18,10 +19,13 @@ class Player():
         if game_over == 0:
             # get keypresses
             key = pygame.key.get_pressed()
+            # making sure he isn't in the air nor jumping already before jumping
             if (key[pygame.K_SPACE] or key[pygame.K_UP]) and self.jumped == False and self.in_air == False:
-                GameMetaData.jump_fx.play()
-                self.vel_y = -15  # * GameMetaData.scale_factor
+                GameMetaData.jump_fx.play()  # playing jump sound
+                self.vel_y = -15  # the actual jumping
                 self.jumped = True
+
+            # making sure you released the key at least once to jump again
             if (key[pygame.K_SPACE] or key[pygame.K_UP]) == False:
                 self.jumped = False
             if key[pygame.K_LEFT]:
@@ -53,9 +57,9 @@ class Player():
 
             # add gravity
             self.vel_y += 1
-            if self.vel_y > 10:  # * GameMetaData.scale_factor:
-                self.vel_y = 10  # * GameMetaData.scale_factor
-            dy += self.vel_y  # * GameMetaData.scale_factor
+            if self.vel_y > 10:
+                self.vel_y = 10
+            dy += self.vel_y
 
             # check for collision
             self.in_air = True
