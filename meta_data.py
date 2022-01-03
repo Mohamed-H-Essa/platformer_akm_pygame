@@ -5,6 +5,7 @@ from pygame import mixer
 
 class GameMetaData:
 
+    # Ahmed Ali group idea
     blob_group = pygame.sprite.Group()
     platform_group = pygame.sprite.Group()
     lava_group = pygame.sprite.Group()
@@ -22,7 +23,10 @@ class GameMetaData:
     # defining screen variables ( width and height )
     #
     # adding scale factor for different sceren reselutions
+
+    # Siko scale_factor idea
     scale_factor = 0.7
+    #
     screen_width = 1000 * scale_factor
     screen_height = 1000 * scale_factor
     # define game variables
@@ -30,10 +34,11 @@ class GameMetaData:
     game_over = 0
     main_menu = True
     level = 1
-    lives = 7
+    # lives = 3
     # max_levels = 7
     max_levels = 2
     # player = Player(100, screen_height - 130)
+
     score = 0
     blue = (0, 0, 255)
 

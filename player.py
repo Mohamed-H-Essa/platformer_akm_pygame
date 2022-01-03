@@ -20,7 +20,7 @@ class Player():
             key = pygame.key.get_pressed()
             if (key[pygame.K_SPACE] or key[pygame.K_UP]) and self.jumped == False and self.in_air == False:
                 GameMetaData.jump_fx.play()
-                self.vel_y = -15 * GameMetaData.scale_factor
+                self.vel_y = -15  # * GameMetaData.scale_factor
                 self.jumped = True
             if (key[pygame.K_SPACE] or key[pygame.K_UP]) == False:
                 self.jumped = False
@@ -53,8 +53,8 @@ class Player():
 
             # add gravity
             self.vel_y += 1
-            if self.vel_y > 10 * GameMetaData.scale_factor:  # * GameMetaData.scale_factor:
-                self.vel_y = 10 * GameMetaData.scale_factor  # * GameMetaData.scale_factor
+            if self.vel_y > 10:  # * GameMetaData.scale_factor:
+                self.vel_y = 10  # * GameMetaData.scale_factor
             dy += self.vel_y  # * GameMetaData.scale_factor
 
             # check for collision
@@ -117,7 +117,7 @@ class Player():
         elif game_over == -1:
             self.image = self.dead_image
             draw_text('GAME OVER!', GameMetaData.font, GameMetaData.blue,
-                      (GameMetaData.screen_width // 2) - 200*GameMetaData.scale_factor, GameMetaData.screen_height // 2)
+                      (GameMetaData.screen_width // 2) - 100*GameMetaData.scale_factor, GameMetaData.screen_height // 2)
             if self.rect.y > 200:
                 self.rect.y -= 5
 

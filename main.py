@@ -11,7 +11,7 @@ from meta_data import GameMetaData
 from meta_data import GameMetaData
 from player import Player
 
-##
+
 GameMetaData.metaGameStarter()
 GameMetaData.defineFont()
 
@@ -20,7 +20,10 @@ white = (255, 255, 255)
 
 
 # load images
-sun_img = pygame.image.load('img/sun.png').convert_alpha()  # .convert()
+# shreif
+# .convert_alpha() FPS ==> 15=>120
+# convert_alpha idea-->
+sun_img = pygame.image.load('img/sun.png').convert_alpha()
 sun_img = pygame.transform.scale(
     sun_img, (sun_img.get_width() * GameMetaData.scale_factor, sun_img.get_height() * GameMetaData.scale_factor))
 bg_img = pygame.image.load('img/sky.png').convert_alpha()
@@ -100,8 +103,10 @@ def main():
         # print(len(world_data))
     # GameMetaData.world = World(GameMetaData.world_data)
     GameMetaData.world = World(GameMetaData.world_data)
-    player = Player(100, GameMetaData.screen_height -
-                    130 * GameMetaData.scale_factor, GameMetaData.world)
+    player = Player(
+        100 * GameMetaData.scale_factor,
+        GameMetaData.screen_height - 10 * GameMetaData.scale_factor,
+        GameMetaData.world)
     # player = Player(100, GameMetaData.screen_height - 130)
 
     # GameMetaData.blob_group = pygame.sprite.Group()
@@ -141,6 +146,7 @@ def main():
             sun_img, (100*GameMetaData.scale_factor, 100*GameMetaData.scale_factor))
 
         if GameMetaData.main_menu == True:
+            # does 2 things at the same time
             if exit_button.draw():
                 run = False
             if start_button.draw():
@@ -156,15 +162,19 @@ def main():
                 if pygame.sprite.spritecollide(player, GameMetaData.coin_group, True):
                     GameMetaData.score += 1
                     GameMetaData.coin_fx.play()
-                draw_text('X ' + str(GameMetaData.score) + '''    FPS: ''' + str(GameMetaData.clock.get_fps())[0:5], GameMetaData.font_score,
+                draw_text('X ' + str(GameMetaData.score) + '    FPS: ' + str(GameMetaData.clock.get_fps())[0:5], GameMetaData.font_score,
                           white, GameMetaData.tile_size - 10 * GameMetaData.scale_factor, 10 * GameMetaData.scale_factor)
                 # draw_text('LIVES x ' + str(GameMetaData.lives), GameMetaData.font_score,
                 #           white, GameMetaData.screen_width - GameMetaData.tile_size - 10 * GameMetaData.scale_factor, 10 * GameMetaData.scale_factor)
-                lives_text = GameMetaData.font.render(
-                    'LIVES ' + str(GameMetaData.lives), 1, white)
-                GameMetaData.screen.blit(lives_text, (
-                    GameMetaData.screen_width - GameMetaData.tile_size - 10 *
-                    GameMetaData.scale_factor - lives_text.get_width(), 20 * GameMetaData.scale_factor))
+                off_white = (30, 30, 30)
+                level_text = GameMetaData.font.render(
+                    'LEVEL: ' + str(GameMetaData.level), 1, off_white)
+                # level_text_b = GameMetaData.font.render(
+                #     'LEVEL: ' + str(GameMetaData.level), 1, white)
+                GameMetaData.screen.blit(level_text, (
+                    GameMetaData.screen_width / 2
+                    # - GameMetaData.tile_size - 10 * GameMetaData.scale_factor
+                    - level_text.get_width() / 2, 50 * GameMetaData.scale_factor))
 
             GameMetaData.blob_group.draw(GameMetaData.screen)
             GameMetaData.platform_group.draw(GameMetaData.screen)
@@ -179,12 +189,13 @@ def main():
                 # print('-1 ')
                 # GameMetaData.game_over = 0
                 # addition
-                # if GameMetaData.lives > 0:  # and GameMetaData.game_over == -1:
+                # and GameMetaData.game_over == -1:
                 # addition
                 # GameMetaData.lives -= 1
-                # GameMetaData.game_over = 0
+
                 # addition (and)
-                if restart_button.draw():  # and GameMetaData.lives == 0:
+                # and GameMetaData.lives == 0:
+                if restart_button.draw():
                     GameMetaData.world_data = []
                     GameMetaData.world = reset_level(
                         GameMetaData.level, player)
@@ -207,15 +218,15 @@ def main():
                         GameMetaData.level, player)
                     GameMetaData.game_over = 0
                 else:
-                    draw_text('YOU WIN!', GameMetaData.font, GameMetaData.blue,
+                    draw_text('YOU WON, yaaaaaaaay!', GameMetaData.font, GameMetaData.blue,
                               (GameMetaData.screen_width // 2) - 140 * GameMetaData.scale_factor, GameMetaData.screen_height // 2)
-                    if restart_button.draw():
-                        GameMetaData.level = 1
-                        # reset level
-                        GameMetaData.world_data = []
-                        GameMetaData.world = reset_level(GameMetaData.level)
-                        GameMetaData.game_over = 0
-                        GameMetaData.score = 0
+                    # if restart_button.draw():
+                    #     GameMetaData.level = 1
+                    #     # reset level
+                    #     GameMetaData.world_data = []
+                    #     GameMetaData.world = reset_level(GameMetaData.level)
+                    #     GameMetaData.game_over = 0
+                    #     GameMetaData.score = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -226,5 +237,4 @@ def main():
     pygame.quit()
 
 
-if __name__ == '__main__':
-    main()
+main()

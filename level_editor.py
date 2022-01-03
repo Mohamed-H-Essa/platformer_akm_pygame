@@ -1,7 +1,7 @@
 import pygame
 import pickle
 from os import path
-
+from meta_data import GameMetaData
 
 pygame.init()
 
@@ -12,8 +12,9 @@ fps = 60
 tile_size = 50
 cols = 20
 margin = 100
+#
 screen_width = tile_size * cols
-screen_height = (tile_size * cols) + margin
+screen_height = ((tile_size * cols) + margin)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Level Editor')
@@ -156,8 +157,9 @@ class Button():
 
 
 # create load and save buttons
-save_button = Button(screen_width // 2 - 150, screen_height - 80, save_img)
-load_button = Button(screen_width // 2 + 50, screen_height - 80, load_img)
+# addition
+save_button = Button(screen_width // 2 - 150, (screen_height)-80, save_img)
+load_button = Button(screen_width // 2 + 50, (screen_height)-80, load_img)
 
 # main game loop
 run = True
@@ -223,7 +225,7 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 level += 1
-            elif event.key == pygame.K_DOWN and level > 1:
+            elif event.key == pygame.K_DOWN and level > 0:
                 level -= 1
 
     # update game display window
