@@ -21,14 +21,18 @@ class GameMetaData:
 
     # defining screen variables ( width and height )
     #
-    screen_width = 1000
-    screen_height = 1000
+    # adding scale factor for different sceren reselutions
+    scale_factor = 0.7
+    screen_width = 1000 * scale_factor
+    screen_height = 1000 * scale_factor
     # define game variables
-    tile_size = 50
+    tile_size = 50 * scale_factor
     game_over = 0
     main_menu = True
-    level = 0
-    max_levels = 7
+    level = 1
+    lives = 7
+    # max_levels = 7
+    max_levels = 2
     # player = Player(100, screen_height - 130)
     score = 0
     blue = (0, 0, 255)
@@ -59,5 +63,7 @@ class GameMetaData:
 
     @classmethod
     def defineFont(cls):
-        cls.font = pygame.font.SysFont('Bauhaus 93', 70)
-        cls.font_score = pygame.font.SysFont('Bauhaus 93', 30)
+        cls.font = pygame.font.SysFont(
+            'Bauhaus 93', int(70 * cls.scale_factor))
+        cls.font_score = pygame.font.SysFont(
+            'Bauhaus 93', int(30 * cls.scale_factor))

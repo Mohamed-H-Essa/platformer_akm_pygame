@@ -13,8 +13,8 @@ class World():
         self.tile_list = []
 
         # load images
-        dirt_img = pygame.image.load('img/dirt.png')
-        grass_img = pygame.image.load('img/grass.png')
+        dirt_img = pygame.image.load('img/dirt.png').convert_alpha()
+        grass_img = pygame.image.load('img/grass.png').convert_alpha()
 
         row_count = 0
         for row in data:
@@ -38,10 +38,12 @@ class World():
                     self.tile_list.append(tile)
                 if tile == 3:
                     blob = Enemy(col_count * GameMetaData.tile_size,
-                                 row_count * GameMetaData.tile_size + 15)
+                                 row_count * GameMetaData.tile_size + 15*GameMetaData.scale_factor)
                     GameMetaData.blob_group.add(blob)
                 if tile == 4:
-                    platform = platform.Platform(
+                    # platform = platform.Platform(
+                    #     col_count * GameMetaData.tile_size, row_count * GameMetaData.tile_size, 1, 0)
+                    platform = Platform(
                         col_count * GameMetaData.tile_size, row_count * GameMetaData.tile_size, 1, 0)
                     GameMetaData.platform_group.add(platform)
                 if tile == 5:

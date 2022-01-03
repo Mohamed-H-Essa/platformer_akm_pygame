@@ -9,5 +9,5 @@ class Lava(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(
             img, (GameMetaData.tile_size, GameMetaData.tile_size // 2))
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x  # * GameMetaData.scale_factor
+        self.rect.y = y  # * GameMetaData.scale_factor

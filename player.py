@@ -7,7 +7,7 @@ from draw_text import draw_text
 class Player():
     def __init__(self, x, y, world):
         self.reset(x, y)
-        self.world = world
+        self.world = GameMetaData.world
 
     def update(self, game_over):
         dx = 0
@@ -18,18 +18,18 @@ class Player():
         if game_over == 0:
             # get keypresses
             key = pygame.key.get_pressed()
-            if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
+            if (key[pygame.K_SPACE] or key[pygame.K_UP]) and self.jumped == False and self.in_air == False:
                 GameMetaData.jump_fx.play()
-                self.vel_y = -15
+                self.vel_y = -15 * GameMetaData.scale_factor
                 self.jumped = True
-            if key[pygame.K_SPACE] == False:
+            if (key[pygame.K_SPACE] or key[pygame.K_UP]) == False:
                 self.jumped = False
             if key[pygame.K_LEFT]:
-                dx -= 5
+                dx -= 5 * GameMetaData.scale_factor
                 self.counter += 1
                 self.direction = -1
             if key[pygame.K_RIGHT]:
-                dx += 5
+                dx += 5 * GameMetaData.scale_factor
                 self.counter += 1
                 self.direction = 1
             if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
@@ -53,13 +53,14 @@ class Player():
 
             # add gravity
             self.vel_y += 1
-            if self.vel_y > 10:
-                self.vel_y = 10
-            dy += self.vel_y
+            if self.vel_y > 10 * GameMetaData.scale_factor:  # * GameMetaData.scale_factor:
+                self.vel_y = 10 * GameMetaData.scale_factor  # * GameMetaData.scale_factor
+            dy += self.vel_y  # * GameMetaData.scale_factor
 
             # check for collision
             self.in_air = True
-            for tile in self.world.tile_list:
+            # for tile in self.world.tile_list:
+            for tile in GameMetaData.world.tile_list:
                 # check for collision in x direction
                 if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     dx = 0
@@ -116,7 +117,7 @@ class Player():
         elif game_over == -1:
             self.image = self.dead_image
             draw_text('GAME OVER!', GameMetaData.font, GameMetaData.blue,
-                      (GameMetaData.screen_width // 2) - 200, GameMetaData.screen_height // 2)
+                      (GameMetaData.screen_width // 2) - 200*GameMetaData.scale_factor, GameMetaData.screen_height // 2)
             if self.rect.y > 200:
                 self.rect.y -= 5
 
@@ -131,16 +132,17 @@ class Player():
         self.index = 0
         self.counter = 0
         for num in range(1, 5):
-            img_right = pygame.image.load(f'img/guy{num}.png')
-            img_right = pygame.transform.scale(img_right, (40, 80))
+            img_right = pygame.image.load(f'img/guy{num}.png').convert_alpha()
+            img_right = pygame.transform.scale(
+                img_right, (40 * GameMetaData.scale_factor, 80 * GameMetaData.scale_factor))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
             self.images_left.append(img_left)
         self.dead_image = pygame.image.load('img/ghost.png')
         self.image = self.images_right[self.index]
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x * GameMetaData.scale_factor
+        self.rect.y = y * GameMetaData.scale_factor
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.vel_y = 0
