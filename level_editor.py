@@ -8,10 +8,12 @@ pygame.init()
 clock = pygame.time.Clock()
 fps = 60
 
+# ** scale factor
+scale = 0.5
 # game window
-tile_size = 50
+tile_size = 50 * scale
 cols = 20
-margin = 100
+margin = 100 * scale
 #
 screen_width = tile_size * cols
 screen_height = ((tile_size * cols) + margin)
@@ -45,7 +47,7 @@ level = 1
 white = (255, 255, 255)
 green = (144, 201, 120)
 
-font = pygame.font.SysFont('Futura', 24)
+font = pygame.font.SysFont('Futura', int(24 * scale))
 
 # create empty tile list
 world_data = []
@@ -131,6 +133,9 @@ def draw_world():
 class Button():
     def __init__(self, x, y, image):
         self.image = image
+        # ** scale
+        image = pygame.transform.scale(
+            image, (image.get_width() * scale, image.get_height() * scale))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -158,8 +163,10 @@ class Button():
 
 # create load and save buttons
 # addition
-save_button = Button(screen_width // 2 - 150, (screen_height)-80, save_img)
-load_button = Button(screen_width // 2 + 50, (screen_height)-80, load_img)
+save_button = Button(screen_width // 2 - 150 * scale,
+                     (screen_height)-80 * scale, save_img)
+load_button = Button(screen_width // 2 + 50 * scale,
+                     (screen_height)-80 * scale, load_img)
 
 # main game loop
 run = True
@@ -192,9 +199,10 @@ while run:
     draw_world()
 
     # text showing current level
-    draw_text(f'Level: {level}', font, white, tile_size, screen_height - 60)
+    draw_text(f'Level: {level}', font, white,
+              tile_size, screen_height - 60 * scale)
     draw_text('Press UP or DOWN to change level', font,
-              white, tile_size, screen_height - 40)
+              white, tile_size, screen_height - 40 * scale)
 
     # event handler
     for event in pygame.event.get():
@@ -206,8 +214,8 @@ while run:
         if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
             clicked = True
             pos = pygame.mouse.get_pos()
-            x = pos[0] // tile_size
-            y = pos[1] // tile_size
+            x = int(pos[0] // tile_size)
+            y = int(pos[1] // tile_size)
             # check that the coordinates are within the tile area
             if x < 20 and y < 20:
                 # update tile value

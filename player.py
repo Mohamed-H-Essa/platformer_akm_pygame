@@ -4,6 +4,7 @@ from meta_data import GameMetaData
 from draw_text import draw_text
 
 
+# Siko
 class Player():
     def __init__(self, x, y, world):
         self.reset(x, y)

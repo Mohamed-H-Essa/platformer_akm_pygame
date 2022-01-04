@@ -3,6 +3,7 @@ from meta_data import GameMetaData
 from coordinated import Coordinated
 
 
+# Kareem Taha
 class Lava(Coordinated, pygame.sprite.Sprite):
     def __init__(self, x, y):
         Coordinated.__init__(self, x, y)

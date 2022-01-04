@@ -20,7 +20,7 @@ GameMetaData.defineFont()
 white = (255, 255, 255)
 
 
-# Sherif collected these assets so as to add cinsistency across sprites
+#  collected these assets so as to add cinsistency across sprites
 sun_img = pygame.image.load('img/sun.png').convert_alpha()
 sun_img = pygame.transform.scale(
     sun_img, (sun_img.get_width() * GameMetaData.scale_factor, sun_img.get_height() * GameMetaData.scale_factor))
@@ -38,6 +38,7 @@ exit_img = pygame.transform.scale(
     exit_img, (exit_img.get_width() * GameMetaData.scale_factor, exit_img.get_height() * GameMetaData.scale_factor))
 
 # function to reset level
+# Hosny
 
 
 def reset_level(level, player):
@@ -62,6 +63,7 @@ def reset_level(level, player):
 
 def main():
     # load in level data and create world
+    # sherif
     if path.exists(f'./levels_data/level{GameMetaData.level}_data'):
         pickle_in = open(f'./levels_data/level{GameMetaData.level}_data', 'rb')
         GameMetaData.world_data = pickle.load(pickle_in)
@@ -111,9 +113,10 @@ def main():
                 draw_text(f'number of wins: {GameMetaData.victory_times}', GameMetaData.font, GameMetaData.blue,
                           (GameMetaData.screen_width // 2) - 110 * GameMetaData.scale_factor, GameMetaData.screen_height // 2)
                 draw_text(f'press "start" to play again <3', GameMetaData.font, GameMetaData.blue,
-                          (GameMetaData.screen_width // 2) - 230 * GameMetaData.scale_factor, GameMetaData.screen_height // 2 + 60)
+                          (GameMetaData.screen_width // 2) - 230 * GameMetaData.scale_factor, GameMetaData.screen_height // 2 + 60 * GameMetaData.scale_factor)
 
         else:
+            # shefo starts
             GameMetaData.world.draw()
 
             if GameMetaData.game_over == 0:

@@ -4,9 +4,12 @@ from pygame import transform
 from meta_data import GameMetaData
 from coordinated import Coordinated
 
-class Enemy(Coordinated,pygame.sprite.Sprite):
+# Kareem Taha
+
+
+class Enemy(Coordinated, pygame.sprite.Sprite):
     def __init__(self, x, y):
-        Coordinated.__init__(self, x,y)
+        Coordinated.__init__(self, x, y)
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('img/blob.png').convert_alpha()
 

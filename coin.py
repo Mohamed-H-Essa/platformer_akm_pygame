@@ -1,6 +1,8 @@
 import pygame
 from meta_data import GameMetaData
 
+# Kareem Taha
+
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self, x, y):
